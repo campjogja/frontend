@@ -1,4 +1,4 @@
-.App {
+/* .App {
   text-align: center;
 }
 
@@ -35,4 +35,26 @@
   to {
     transform: rotate(360deg);
   }
+} */
+
+.cardContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+
+.card {
+  justify-content: center;
+  background-color: white;
+  -webkit-box-shadow: 7px 3px 72px 0px rgba(0, 0, 0, 0.28);
+  -moz-box-shadow: 7px 3px 72px 0px rgba(0, 0, 0, 0.28);
+  box-shadow: 7px 3px 72px 0px rgba(0, 0, 0, 0.28);
+  margin: 20px;
+  border-radius: 10px;
+}
+
+.textTitle {
+  margin-left: 20px;
+  margin-right: 20px;
 }

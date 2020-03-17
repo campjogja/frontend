@@ -3,18 +3,28 @@ import logo from '../logo.svg';
 import '../App.css';
 import Navbar from './NavBar';
 
+import {connect} from 'react-redux'
+
 function Home(props) {
-    console.log('data', props.location.data);
-    
+    console.log('data home', props.book.book.bookData);
+    const {bookData} = props.book.book
   return (
     <div >
         <Navbar />
-        <p>
-        {props.name}
-        </p>
+        {bookData.map(item => (
+          <div>
+            {item.title}
+          </div>
+        ))}
         <h1>Ini Home</h1>
     </div>
   );
 }
 
-export default Home;
+const mapStateToProps = (book) => {
+  return{
+    book
+  }
+}
+
+export default connect(mapStateToProps)(Home);

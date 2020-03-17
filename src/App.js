@@ -5,6 +5,9 @@ import {Link} from 'react-router-dom';
 import Home from './Components/Home';
 import Navbar from './Components/NavBar';
 
+import {connect} from 'react-redux';
+import {getAllBook, postNewBook} from './redux/actions/books';
+
 const URL_STRING = "/api/v1/"
 
 class App extends Component {
@@ -22,42 +25,29 @@ class App extends Component {
     this.getData()
   }
 
-  getData = () => {
-    Axios.get(URL_STRING)
-      .then(({ data }) => {
-        this.setState({
-          library: data.result
-        })
-      })
-      .catch(err => console.log(err))
+  getData = async () => {
+    // Axios.get(URL_STRING)
+    //   .then(({ data }) => {
+    //     this.setState({
+    //       library: data.result
+    //     })
+    //   })
+    //   .catch(err => console.log(err))
+   await this.props.dispatch(getAllBook())
+   this.setState({
+     library: this.props.data.book.bookData
+   })
   }
 
   addBook = (id) => {
     const { title, author, description, body } = this.state
     const book = {
       title,
-      body
+      author, 
+      description,
     }
 
-    // Axios.post(`https://jsonplaceholder.typicode.com/posts`, book, {
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //     'token': `bearer ${token}`
-    //   },
-    // })
-    //   .then((response) => {
-    //     console.log('response', response.data)
-
-    //   })
-    //   .catch((error) => {
-    //     alert('error', error.response)
-    //   })
-
-    // console.log('book', book);
-    Axios.post(`https://jsonplaceholder.typicode.com/posts`, book)
-      .then(res => {
-        console.log(res);
-      })
+    this.props.dispatch(postNewBook(book))
   }
 
   nextDate = () => {
@@ -82,7 +72,7 @@ class App extends Component {
             ) :
             library.map(item => (
               <Link to={{pathname: '/home', data: item}}>
-              <div key={item.id} className="cardContainer">
+              <div className="cardContainer">
                 <div className="card">
                   <h1 className="textTitle">{item.title}</h1>
                   <p className="textTitle">{item.author}</p>
@@ -105,7 +95,13 @@ class App extends Component {
           <input type="text"
             onChange={(e) => {
               this.setState({
-                body: e.target.value
+                author: e.target.value
+              })
+            }} />
+             <input type="text"
+            onChange={(e) => {
+              this.setState({
+                description: e.target.value
               })
             }} />
           {/* <input type="text"
@@ -123,4 +119,10 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = (book) => {
+  return {
+    data: book
+  }
+}
+
+export default connect(mapStateToProps)(App);
